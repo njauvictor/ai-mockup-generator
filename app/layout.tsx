@@ -32,7 +32,7 @@ export default function RootLayout({
      <ClerkProvider>
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-none `}
       >
          <ThemeProvider
             attribute="class"
@@ -40,7 +40,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-             <HeroHeader />
+        
         {children}
         </ThemeProvider>
       </body>

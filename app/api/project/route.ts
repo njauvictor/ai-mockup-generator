@@ -1,8 +1,8 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/config/db";
-import { projectsTable, usersTable } from "@/config/schema";
-import { eq } from "drizzle-orm";
+import { projectsTable, ScreenConfigTable, usersTable } from "@/config/schema";
+import { and, eq } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
     try {
@@ -53,4 +53,31 @@ export async function POST(req: NextRequest) {
     }
 }
 
-    
+
+
+export async function GET(req: NextRequest) {
+    const projectId = req.nextUrl.searchParams.get("projectId");
+    const user = await currentUser();
+
+    if (!projectId || !user?.primaryEmailAddress?.emailAddress) {
+        return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
+    }
+
+    try {
+     const result = await db.select().from(projectsTable)
+        .where(and(eq(projectsTable.projectId, projectId as string ), eq(projectsTable.userId, user.primaryEmailAddress.emailAddress as string)));
+
+        const ScreenConfig = await db.select().from(ScreenConfigTable)
+        .where(eq(ScreenConfigTable.projectId, projectId as string ));
+
+    return NextResponse.json({
+        projectDetails: result[0],
+        screenConfig: ScreenConfig
+
+    });
+    } catch (e) {
+
+    return NextResponse.json({ error: e })    
+        
+    }
+}

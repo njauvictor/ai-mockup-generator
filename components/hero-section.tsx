@@ -27,6 +27,7 @@ import { useState } from "react"
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import { HeroHeader } from "./header"
 
 
 
@@ -64,7 +65,7 @@ export default function HeroSection() {
     setLoading(false);
 
     // // Redirect to the project page
-    // router.push(`/project/${projectId}`);
+     router.push(`/project/${projectId}`);
 
 
 
@@ -81,6 +82,7 @@ export default function HeroSection() {
       >
         <div className="absolute left-1/2 top-[-40%] h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
       </div>
+           <HeroHeader />
 
       <section className="relative pt-24">
         <div className="mx-auto max-w-7xl px-6">
